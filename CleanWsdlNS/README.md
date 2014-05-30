@@ -23,8 +23,9 @@ public class HelloRequest
 4. Add or modify the <services> section in the web.config to specify namespace on data binding
 ```xml
 <services>
-    <service name="CleanWsdlNS.Services.HelloServiceImpl">
-    <endpoint address="HelloService.svc" bindingNamespace="http://oscarkuo.com/v1/hello" binding="basicHttpBinding" contract="CleanWsdlNS.Services.IHelloService" />
-    </service>
+  <service name="CleanWsdlNS.Services.HelloServiceImpl">
+    <endpoint address="HelloService.svc" bindingNamespace="http://oscarkuo.com/v1/hello" 
+	          binding="basicHttpBinding" contract="CleanWsdlNS.Services.IHelloService" />
+  </service>
 </services>
 ```
