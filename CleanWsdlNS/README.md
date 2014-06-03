@@ -26,7 +26,7 @@ public class HelloResponse
 public class HelloRequest
 	```
 
-4. Add or modify the <services> section in the web.config to specify namespace on data binding
+4. Add or modify the `<services>` section under `<system.serviceModel>` section in the web.config to specify namespace on data binding
 
 	```xml
 <services>
