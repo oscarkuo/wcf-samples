@@ -26,10 +26,7 @@ namespace PerRequestLogging.Behaviours
 
         public void ApplyDispatchBehavior(ServiceEndpoint endpoint, System.ServiceModel.Dispatcher.EndpointDispatcher endpointDispatcher)
         {
-            foreach (var operation in endpointDispatcher.DispatchRuntime.Operations)
-            {
-                operation.ParameterInspectors.Add(new RequestLoggingInspector());
-            }
+            endpointDispatcher.DispatchRuntime.MessageInspectors.Add(new RequestLoggingInspector());
         }
 
         public void Validate(ServiceEndpoint endpoint)

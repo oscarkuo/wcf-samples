@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerRequestLogging.Services"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerRequestLogging.ValueObjects", "PerRequestLogging.ValueObjects\PerRequestLogging.ValueObjects.csproj", "{86A2B078-65F9-4553-994A-C45B0D485ADC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerRequestLogging.Infrastructure", "PerRequestLogging.Infrastructure\PerRequestLogging.Infrastructure.csproj", "{517CFCAB-1FC5-419A-8F43-9C60FAB9521F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{86A2B078-65F9-4553-994A-C45B0D485ADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86A2B078-65F9-4553-994A-C45B0D485ADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86A2B078-65F9-4553-994A-C45B0D485ADC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{517CFCAB-1FC5-419A-8F43-9C60FAB9521F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{517CFCAB-1FC5-419A-8F43-9C60FAB9521F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{517CFCAB-1FC5-419A-8F43-9C60FAB9521F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{517CFCAB-1FC5-419A-8F43-9C60FAB9521F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
