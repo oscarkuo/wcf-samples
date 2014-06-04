@@ -30,7 +30,7 @@ namespace PerRequestLogging.Behaviours
         {
             CheckThrowOnNullRequestLog();
             Log.Flush();
-            Log = null;
+            Log = null; // clear log object for current thread specific operation context instance
         }
 
         public static RequestLoggingExtension Current
@@ -41,7 +41,9 @@ namespace PerRequestLogging.Behaviours
                 if (instance == null)
                 {
                     instance = new RequestLoggingExtension();
-                    OperationContext.Current.Extensions.Add(instance);
+
+                    // adds an instance to the thread specific instance of the operation context
+                    OperationContext.Current.Extensions.Add(instance); 
                 }
 
                 return instance;
