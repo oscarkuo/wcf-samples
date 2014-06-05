@@ -1,5 +1,5 @@
 # SOAP and JSON Endpoints
-To demostrate the RESTful services support in WCF. This sample is based on the FilelessActivation sample (https://github.com/oscarkuo/wcf-samples/tree/master/FilelessActivation) so check it out if some `web.config` settings doesn't make sense to you.
+To demostrate the RESTful services support in WCF. This sample is based on the FilelessActivation sample (https://github.com/oscarkuo/wcf-samples/tree/master/FilelessActivation) so check it out if some `web.config` settings don't make sense to you.
 
 ## JSON Service Contract
 Create a new service contract with `WebInvoke` attribute on top of the usual `OperationContract`.
