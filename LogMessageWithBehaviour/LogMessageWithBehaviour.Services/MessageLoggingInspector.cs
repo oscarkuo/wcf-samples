@@ -10,51 +10,27 @@ namespace LogMessageWithBehaviour.Services
 {
     public class MessageLoggingInspector : IDispatchMessageInspector
     {
-        private struct LogState
-        {
-            public Uri Destination { get; set; }
-            public List<string> LogEntries { get; set; }
-        }
-
-        private static Message CopyAndLogMessage(LogState state, MessageBuffer buffer)
+        private static Message CopyAndLogMessage(Log log, MessageBuffer buffer)
         {
             var message = buffer.CreateMessage();
-            var settings = new XmlWriterSettings();
-
-            settings.OmitXmlDeclaration = true;
-            settings.Indent = true;
-            settings.NewLineHandling = NewLineHandling.None;
-            settings.Indent = false;
-
-            using (var sw = new StringWriter())
-            using (var xw = XmlWriter.Create(sw, settings))
-            {
-                message.WriteMessage(xw);
-                xw.Flush();
-                sw.Flush();
-                state.LogEntries.Add(state.Destination.ToString() + "," + sw.ToString());
-            }
-
+            log.Write(message);
             return buffer.CreateMessage();
-        }
-
-        private static void FlushLogEntries(List<string> logEntries)
-        {
-            File.AppendAllLines(Path.Combine(Path.GetTempPath(), "LogMessageWithBehaviour.txt"), logEntries);
         }
 
         public object AfterReceiveRequest(ref System.ServiceModel.Channels.Message request, IClientChannel channel, InstanceContext instanceContext)
         {
-            var logState = new LogState { Destination = request.Headers.To, LogEntries = new List<string>() };
-            request = CopyAndLogMessage(logState, request.CreateBufferedCopy(int.MaxValue));
-            return logState;
+            var buffer = request.CreateBufferedCopy(int.MaxValue);
+            var path = Path.Combine(Path.GetTempPath(), "LogMessageWithBehaviour.txt");
+            var log = new Log(path, request.Headers.To);
+            request = CopyAndLogMessage(log, buffer);
+            return log;
         }
 
         public void BeforeSendReply(ref System.ServiceModel.Channels.Message reply, object correlationState)
         {
-            var logState = (LogState)correlationState;
-            reply = CopyAndLogMessage(logState, reply.CreateBufferedCopy(int.MaxValue));
-            FlushLogEntries(logState.LogEntries);
+            var log = (Log)correlationState;
+            reply = CopyAndLogMessage(log, reply.CreateBufferedCopy(int.MaxValue));
+            log.Flush();
         }
     }
 }

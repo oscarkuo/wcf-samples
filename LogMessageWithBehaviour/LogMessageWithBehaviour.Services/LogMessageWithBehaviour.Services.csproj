@@ -65,6 +65,7 @@
     <Compile Include="HelloServiceImpl.cs" />
     <Compile Include="IHelloService.cs" />
     <Compile Include="IHelloServiceJson.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="MessageLoggingBehaviour.cs" />
     <Compile Include="MessageLoggingInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
