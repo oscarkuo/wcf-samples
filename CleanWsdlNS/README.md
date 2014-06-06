@@ -45,4 +45,4 @@ Or you can specify the data contract namespace globally by entering the followin
 [assembly: ContractNamespace("http://oscarkuo.com/v1/hello", ClrNamespace = "CleanWsdlNS.ValueObjects")]
 ```
 
-Note that the `ClrNamespace` will need to match the namespace of your data contracts.
+Note that the `ClrNamespace` will need to match the CLR namespace of your data contracts.
