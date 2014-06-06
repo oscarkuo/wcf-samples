@@ -3,7 +3,7 @@
 
 namespace CleanWsdlNS.ValueObjects
 {
-    [DataContract(Namespace = "http://oscarkuo.com/v1/hello")]
+    [DataContract]
     public class HelloRequest
     {
         [DataMember]

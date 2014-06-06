@@ -15,18 +15,7 @@ public interface IHelloService
 public class HelloServiceImpl : IHelloService
 	```
 
-3. Specify namespace on data contracts
-
-	```cs
-[DataContract(Namespace = "http://oscarkuo.com/v1/hello")]
-public class HelloResponse
-	```
-	```cs
-[DataContract(Namespace = "http://oscarkuo.com/v1/hello")]
-public class HelloRequest
-	```
-
-4. Add or modify the `<services>` section under `<system.serviceModel>` section in the web.config to specify namespace on data binding
+3. Add or modify the `<services>` section under `<system.serviceModel>` section in the web.config to specify namespace on data binding
 
 	```xml
 <system.serviceModel>
@@ -38,3 +27,22 @@ public class HelloRequest
   </services>
 </system.serviceModel>
 	```
+
+Finally, for data contracts you can either specify their namespace inidividually
+
+```cs
+[DataContract(Namespace = "http://oscarkuo.com/v1/hello")]
+public class HelloResponse
+```
+```cs
+[DataContract(Namespace = "http://oscarkuo.com/v1/hello")]
+public class HelloRequest
+```
+
+Or you can specify the data contract namespace globally by entering the following line into `AssemblyInfo.cs`
+
+```cs
+[assembly: ContractNamespace("http://oscarkuo.com/v1/hello", ClrNamespace = "CleanWsdlNS.ValueObjects")]
+```
+
+Note that the `ClrNamespace` will need to match the namespace of your data contracts.
