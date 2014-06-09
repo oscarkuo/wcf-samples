@@ -13,9 +13,12 @@ using System.Xml.Serialization;
 
 namespace PerRequestLogging.Behaviours.Implementations
 {
+    // This class implements a simple File-based logging. This class _MUST_ be state-less because it is
+    // up to Ninject to decide when a new instance is created. State information such as correlation ID and 
+    // log buffer is stored in IInteractionState, which is designed to provide state information for the 
+    // "interaction" session (i.e. process request and reply if applicatible)
     public class FileInteractionLog : IInteractionLog
     {
-        private List<string> _buffer = new List<string>();
         private IInteractionState _state;
 
         public FileInteractionLog(IInteractionState state)
@@ -25,25 +28,27 @@ namespace PerRequestLogging.Behaviours.Implementations
 
         public void Flush()
         {
-            File.AppendAllLines(Path.Combine(Path.GetTempPath(), "wcfrequestslog.csv"), _buffer);
+            var buf = _state.Get<List<string>>(Constants.InteractionLogBufferKey);
+            File.AppendAllLines(Path.Combine(Path.GetTempPath(), "PerRequestlogging.csv"), buf);
+            _state.Set(Constants.InteractionLogBufferKey, null);
         }
 
         private void Write(string type, string message, Exception exception)
         {
+            if (_state == null)
+            {
+                throw new NullReferenceException("No interaction state provided");
+            }
+
             var ex = "";
             if (exception != null)
             {
                 ex = exception.ToString();
             }
 
-            var uri = "(null state)";
-            var cid = "(null state)";
-
-            if (_state != null)
-            {
-                uri = _state.Get<string>("ServiceRequestUri") ?? uri;
-                cid = _state.Get<string>("InternalCorrelationIdentifier") ?? cid;
-            }
+            var uri = _state.Get<Uri>(Constants.ServiceRequestUriKey);
+            var cid = _state.Get<Guid>(Constants.InternalCorrelationIdentifierKey);
+            var buf = _state.Get<List<string>>(Constants.InteractionLogBufferKey);
 
             var builder = new StringBuilder();
             builder.AppendFormat("{0},{1},{2},{3},{4},{5},{6}",
@@ -51,7 +56,7 @@ namespace PerRequestLogging.Behaviours.Implementations
                 Thread.CurrentThread.ManagedThreadId, 
                 cid,
                 DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), type, message, ex);
-            _buffer.Add(builder.ToString());
+            buf.Add(builder.ToString());
         }
 
         public void WriteError(string message, Exception exception)

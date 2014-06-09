@@ -1,12 +1,10 @@
-﻿using PerRequestLogging.ValueObjects;
-using System;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Configuration;
-using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
-using System.Xml;
+
+using PerRequestLogging.ValueObjects;
 
 namespace PerRequestLogging.Behaviours
 {
@@ -29,8 +27,10 @@ namespace PerRequestLogging.Behaviours
 
         public object AfterReceiveRequest(ref System.ServiceModel.Channels.Message request, IClientChannel channel, InstanceContext instanceContext)
         {
-            _state.Set("ServiceRequestUri", OperationContext.Current.Channel.LocalAddress.Uri.ToString());
-            _state.Set("InternalCorrelationIdentifier", Guid.NewGuid().ToString());
+            // set the required state for logging, which is a shared IDictionary stored in OperationContext.Current (See WcfInteractionState.cs)
+            _state.Set(Constants.ServiceRequestUriKey, request.Headers.To);
+            _state.Set(Constants.InternalCorrelationIdentifierKey, Guid.NewGuid());
+            _state.Set(Constants.InteractionLogBufferKey, new List<string>());
             request = CopyLogMessage(request.CreateBufferedCopy(int.MaxValue));
             return null;
         }
