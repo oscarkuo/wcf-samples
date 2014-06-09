@@ -1,7 +1,7 @@
 ﻿using Ninject.Activation;
 using Ninject.Modules;
 using PerRequestLogging.Behaviours;
-using PerRequestLogging.Infrastructure;
+using PerRequestLogging.Behaviours.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +11,10 @@ namespace PerRequestLogging.Services
 {
     public class MyNinjectModule : NinjectModule
     {
-        private static IRequestLog Get(IContext c)
-        {
-            return RequestLoggingExtension.Current.Log;
-        }
-
         public override void Load()
         {
-            Bind<IRequestLog>().To<OperationContextRequestLog>();
+            Bind<IInteractionLog>().To<FileInteractionLog>();
+            Bind<IInteractionState>().To<WcfInteractionState>();            
         }
     }
 }

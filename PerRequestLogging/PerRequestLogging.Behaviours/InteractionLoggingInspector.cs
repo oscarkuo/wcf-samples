@@ -10,17 +10,27 @@ using System.Xml;
 
 namespace PerRequestLogging.Behaviours
 {
-    public class RequestLoggingInspector : IDispatchMessageInspector
+    public class InteractionLoggingInspector : IDispatchMessageInspector
     {
+        private IInteractionLog _log;
+        private IInteractionState _state;
+
+        public InteractionLoggingInspector(IInteractionLog log, IInteractionState state)
+        {
+            _log = log;
+            _state = state;
+        }
+
         private Message CopyLogMessage(MessageBuffer buffer)
         {
-            RequestLoggingExtension.Current.Log.WriteMessage(buffer.CreateMessage());
+            _log.WriteMessage(buffer.CreateMessage());
             return buffer.CreateMessage();
         } 
 
         public object AfterReceiveRequest(ref System.ServiceModel.Channels.Message request, IClientChannel channel, InstanceContext instanceContext)
         {
-            RequestLoggingExtension.Current.BeginRequest();
+            _state.Set("ServiceRequestUri", OperationContext.Current.Channel.LocalAddress.Uri.ToString());
+            _state.Set("InternalCorrelationIdentifier", Guid.NewGuid().ToString());
             request = CopyLogMessage(request.CreateBufferedCopy(int.MaxValue));
             return null;
         }
@@ -28,7 +38,7 @@ namespace PerRequestLogging.Behaviours
         public void BeforeSendReply(ref System.ServiceModel.Channels.Message reply, object correlationState)
         {
             reply = CopyLogMessage(reply.CreateBufferedCopy(int.MaxValue));
-            RequestLoggingExtension.Current.CompleteRequest();
+            _log.Flush();
         }
     }
 }

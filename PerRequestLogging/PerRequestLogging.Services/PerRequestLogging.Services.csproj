@@ -101,10 +101,6 @@
       <Project>{ba918b5b-9d1c-4a15-ac55-1e4af2681726}</Project>
       <Name>PerRequestLogging.Behaviours</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PerRequestLogging.Infrastructure\PerRequestLogging.Infrastructure.csproj">
-      <Project>{517cfcab-1fc5-419a-8f43-9c60fab9521f}</Project>
-      <Name>PerRequestLogging.Infrastructure</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PerRequestLogging.ValueObjects\PerRequestLogging.ValueObjects.csproj">
       <Project>{86a2b078-65f9-4553-994a-c45b0d485adc}</Project>
       <Name>PerRequestLogging.ValueObjects</Name>

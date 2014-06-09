@@ -6,7 +6,6 @@ using System.Web;
 using PerRequestLogging.ValueObjects;
 using System.Threading;
 using PerRequestLogging.Behaviours;
-using PerRequestLogging.Infrastructure;
 using System.Diagnostics;
 
 namespace PerRequestLogging.Services
@@ -15,9 +14,9 @@ namespace PerRequestLogging.Services
     [ServiceBehavior(Namespace = "http://oscarkuo.com/v1/calculator")]
     public class HelloServiceImpl
     {
-        private IRequestLog _log;
+        private IInteractionLog _log;
 
-        public HelloServiceImpl(IRequestLog log) // constructor injection by ninject
+        public HelloServiceImpl(IInteractionLog log) // constructor injection by ninject
         {
             _log = log;
         }
